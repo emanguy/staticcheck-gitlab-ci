@@ -5,7 +5,7 @@ This repo is an adaptor that converts the [staticcheck](https://pkg.go.dev/honne
 
 ## Installation
 ```bash
-go install github.com/miare-ir/staticcheck-gitlab-ci@latest
+go install github.com/emanguy/staticcheck-gitlab-ci@latest
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ code_quality:
   stage: checks
   script:
     - go install honnef.co/go/tools/cmd/staticcheck@v0.4.2
-    - go install github.com/miare-ir/staticcheck-gitlab-ci@latest
+    - go install github.com/emanguy/staticcheck-gitlab-ci@latest
     - staticcheck -f json ./... | staticcheck-gitlab-ci > staticcheck-report.json
   allow_failure: true
   artifacts:
