@@ -22,6 +22,7 @@ type StaticCheckEntry struct {
 }
 
 type GitlabCIEntry struct {
+	CheckName   string `json:"check_name"`
 	Description string `json:"description"`
 	Fingerprint string `json:"fingerprint"`
 	Severity    string `json:"severity"`
@@ -45,6 +46,7 @@ func main() {
 		}
 
 		var gitlabEntry GitlabCIEntry
+		gitlabEntry.CheckName = entry.Code
 		gitlabEntry.Description = entry.Message
 		gitlabEntry.Fingerprint = fmt.Sprintf("%s%s%d%d", entry.Code, entry.Location.File, entry.Location.Line, entry.Location.Column)
 		gitlabEntry.Severity = entry.Severity
