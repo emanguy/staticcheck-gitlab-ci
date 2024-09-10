@@ -49,7 +49,7 @@ func main() {
 		gitlabEntry.CheckName = entry.Code
 		gitlabEntry.Description = entry.Message
 		gitlabEntry.Fingerprint = fmt.Sprintf("%s%s%d%d", entry.Code, entry.Location.File, entry.Location.Line, entry.Location.Column)
-		gitlabEntry.Severity = entry.Severity
+		gitlabEntry.Severity = staticcheckSevToGitlabSev(entry.Severity)
 
 		gitlabEntry.Location.Path = getRelativePath(entry.Location.File)
 		gitlabEntry.Location.Lines.Begin = entry.Location.Line
@@ -72,4 +72,19 @@ func getRelativePath(absolutePath string) string {
 		log.Fatal(err)
 	}
 	return strings.ReplaceAll(absolutePath, path+"/", "")
+}
+
+func staticcheckSevToGitlabSev(scSev string) string {
+	// Staticcheck severities pulled from here: https://github.com/dominikh/go-tools/blob/915b568982be0ad65a98e822471748b328240ed0/lintcmd/lint.go#L373
+	// Gitlab severities pulled from here: https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
+	switch scSev {
+	case "ignored":
+		return "info"
+	case "warning":
+		return "minor"
+	case "error":
+		return "major"
+	default:
+		return scSev
+	}
 }
